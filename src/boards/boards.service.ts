@@ -1,3 +1,4 @@
+import { CreateBoardDto } from './dto/create-board.dto';
 import { Injectable } from '@nestjs/common';
 import { Board, BoardStatus } from './board.model';
 import { v1 as uuid } from 'uuid';
@@ -10,9 +11,9 @@ export class BoardsService {
 		return this.boards;
 	}
 
-	createBoard(title: string, description: string) {
+	createBoard(createBoardDto: CreateBoardDto) {
+		const { title, description } = createBoardDto;
 		const board: Board = {
-			// unique id auto generated
 			id: uuid(),
 			title,
 			description,
