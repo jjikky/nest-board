@@ -6,6 +6,8 @@ import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import * as config from 'config';
+const jwtConfig = config.get('jwt');
 
 @Module({
 	imports: [
@@ -13,9 +15,9 @@ import { PassportModule } from '@nestjs/passport';
 		PassportModule.register({ defaultStrategy: 'jwt' }),
 		// jwt 인증 부분 담당. 주로 sign()을 위한 부분
 		JwtModule.register({
-			secret: 'secret1234',
+			secret: process.env.JWT_SECRET || jwtConfig.secret,
 			signOptions: {
-				expiresIn: 60 * 60,
+				expiresIn: jwtConfig.expiresIn,
 			},
 		}),
 		TypeOrmModule.forFeature([UserRepository]),
