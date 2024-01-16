@@ -3,6 +3,7 @@ import {
 	Controller,
 	Delete,
 	Get,
+	Logger,
 	Param,
 	ParseIntPipe,
 	Patch,
@@ -23,16 +24,20 @@ import { User } from 'src/auth/user.entity';
 @Controller('boards')
 @UseGuards(AuthGuard())
 export class BoardsController {
+	private logger = new Logger('BoardController');
 	constructor(private boardsService: BoardsService) {}
 
 	@Get()
 	getAllBoard(@GetUser() user: User): Promise<Board[]> {
+		this.logger.verbose(`User ${user.username} trying to get all board`);
 		return this.boardsService.getAllBoards(user);
 	}
 
 	@Post()
 	@UsePipes(ValidationPipe)
 	createBoard(@Body() createBoardDto: CreateBoardDto, @GetUser() user: User): Promise<Board> {
+		this.logger.verbose(`User ${user.username} creating a new board 
+		Payload: ${JSON.stringify(createBoardDto)}`);
 		return this.boardsService.createBoard(createBoardDto, user);
 	}
 
