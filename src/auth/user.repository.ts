@@ -19,6 +19,7 @@ export class UserRepository extends Repository<User> {
 			if (err.code === '23505') {
 				throw new ConflictException('Existing username');
 			} else {
+				console.log(err.message);
 				throw new InternalServerErrorException();
 			}
 		}
